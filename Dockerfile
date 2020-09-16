@@ -11,15 +11,18 @@ RUN apt-get install -y \
 	vim \
 	python-pip
 
-# Install ansible
-RUN pip install ansible
+# GB
+RUN apt-get update && apt-get install --assume-yes zlib1g-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+&& docker-php-ext-install -j$(nproc) gd \
+&& docker-php-ext-enable gd
 
 # soap
 RUN rm /etc/apt/preferences.d/no-debian-php && \
-apt-get update && apt-get install -y \
-libssl-dev \
-libxml2-dev \
-php-soap \
+    apt-get update && apt-get install -y \
+    libssl-dev \
+    libxml2-dev \
+    php-soap \
 && apt-get clean -y \
 && docker-php-ext-install soap \
 && docker-php-ext-enable soap
