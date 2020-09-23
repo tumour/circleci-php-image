@@ -1,15 +1,27 @@
-FROM circleci/php:7.2-node-browsers
+FROM php:7.3-fpm
 
-USER root
+RUN apt-get update && apt-get install -y \
+	nano \
+    locales
 
-RUN apt-get update
+# Set timezone to UTC by default
+RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
-RUN docker-php-ext-install zip pdo_mysql
+# Use unicode
+RUN locale-gen C.UTF-8 || true
+ENV LANG=C.UTF-8
 
+# Composer
+RUN curl -sL https://getcomposer.org/installer | php -- --install-dir /usr/bin --filename composer
+
+# PDO
+RUN docker-php-ext-install pdo_mysql
+
+# zip
 RUN apt-get install -y \
-	software-properties-common \
-	vim \
-	python-pip
+        libzip-dev \
+        zip \
+  && docker-php-ext-install zip
 
 # GB
 RUN apt-get update && apt-get install --assume-yes zlib1g-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev
@@ -35,3 +47,6 @@ RUN \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap
+
+USER circleci
+ENV PATH /home/circleci/.local/bin:/home/circleci/bin:${PATH}
