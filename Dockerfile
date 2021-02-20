@@ -53,8 +53,8 @@ RUN \
     docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap
 
-USER circleci
-ENV PATH /home/circleci/.local/bin:/home/circleci/bin:${PATH}
+# USER circleci
+# ENV PATH /home/circleci/.local/bin:/home/circleci/bin:${PATH}
 
-CMD ["/bin/sh"]
-USER root
+# CMD ["/bin/sh"]
+# USER root
