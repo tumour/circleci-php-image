@@ -14,6 +14,11 @@ ENV LANG=C.UTF-8
 # Composer
 RUN curl -sL https://getcomposer.org/installer | php -- --install-dir /usr/bin --filename composer
 
+# exif
+RUN docker-php-ext-install exif
+RUN docker-php-ext-configure exif \
+            --enable-exif
+
 # PDO
 RUN docker-php-ext-install pdo_mysql
 
