@@ -1,4 +1,3 @@
-#FROM php:7.4-fpm-alpine3.13
 FROM php:8.1-fpm-alpine
 
 # Локаль 
@@ -47,5 +46,6 @@ RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/i
 	&& docker-php-ext-install -j$(nproc) gd 
 
 RUN printf '%s\n' 'zend_extension=opcache.so' 'opcache.enable=1' 'opcache.enable_cli=1' 'opcache.fast_shutdown=1' 'opcache.memory_consumption=128' 'opcache.interned_strings_buffer=8' 'opcache.max_accelerated_files=4000' 'opcache.revalidate_freq=60' > /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+RUN echo 'memory_limit = 256M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 CMD ["/bin/sh"]
