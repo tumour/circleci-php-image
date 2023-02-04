@@ -28,7 +28,12 @@ RUN apk update && apk add --no-cache \
 	jpegoptim \
 	optipng \
 	pngquant \
-	gifsicle
+	gifsicle \
+    nodejs \
+    npm \
+    python3 \
+    make \
+    g++
 
 # install dockerize
 #RUN DOCKERIZE_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/dockerize-latest.tar.gz" \
@@ -46,6 +51,6 @@ RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/i
 	&& docker-php-ext-install -j$(nproc) gd 
 
 RUN printf '%s\n' 'zend_extension=opcache.so' 'opcache.enable=1' 'opcache.enable_cli=1' 'opcache.fast_shutdown=1' 'opcache.memory_consumption=128' 'opcache.interned_strings_buffer=8' 'opcache.max_accelerated_files=4000' 'opcache.revalidate_freq=60' > /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
-RUN echo 'memory_limit = 256M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+RUN echo 'memory_limit = 512M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 CMD ["/bin/sh"]
