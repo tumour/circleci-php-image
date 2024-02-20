@@ -25,12 +25,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   openssh-client
 
 #install extensions
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath xml
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath xml sockets
 
 RUN pecl install redis \
   && docker-php-ext-enable redis
 
-RUN pecl install amqp \
+RUN pecl install amqp-1.11.0 \
   && docker-php-ext-enable amqp
 
 RUN docker-php-ext-install gd
